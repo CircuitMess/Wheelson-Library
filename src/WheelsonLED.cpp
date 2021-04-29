@@ -1,7 +1,8 @@
 #include "WheelsonLED.h"
 #include "Nuvoton.h"
+#include "Wheelson.h"
 
-WheelsonLED::WheelsonLED(TwoWire &wire) : Wire(wire) {
+WheelsonLED::WheelsonLED() : Wire(Nuvo.getWire()) {
 
 }
 

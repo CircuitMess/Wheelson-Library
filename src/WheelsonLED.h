@@ -9,7 +9,7 @@
 
 class WheelsonLED {
 public:
-	WheelsonLED(TwoWire& wire);
+	WheelsonLED();
 	void setBacklight(bool backlight);
 	bool getBacklight();
 	void setHeadlight(uint8_t intensity);
