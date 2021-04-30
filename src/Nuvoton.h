@@ -4,8 +4,8 @@
 #include <Wire.h>
 
 #define BYTE_IDENTIFY 0x00
-#define JDNV_ADDR 0x38
-#define JDNV_PIN_RESET 33
+#define WSNV_ADDR 0x38
+#define WSNV_PIN_RESET 33
 
 class Nuvoton {
 public:

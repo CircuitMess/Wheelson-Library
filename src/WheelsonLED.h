@@ -17,7 +17,7 @@ public:
 
 private:
 	bool backlight = false;
-	uint8_t headlight = 20;
+	uint8_t headlight = 0;
 	TwoWire& Wire;
 };
 
