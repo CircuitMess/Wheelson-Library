@@ -10,12 +10,12 @@ void Nuvoton::begin() {
 }
 
 bool Nuvoton::identify() {
-	Wire.beginTransmission(JDNV_ADDR);
+	Wire.beginTransmission(WSNV_ADDR);
 	Wire.write(BYTE_IDENTIFY);
 	Wire.endTransmission();
-	Wire.requestFrom(JDNV_ADDR, 1);
+	Wire.requestFrom(WSNV_ADDR, 1);
 	if(Wire.available()){
-		if(Wire.read() == JDNV_ADDR){
+		if(Wire.read() == WSNV_ADDR){
 			return true;
 		}
 		else{
@@ -28,9 +28,9 @@ bool Nuvoton::identify() {
 }
 
 void Nuvoton::reset() {
-	digitalWrite(JDNV_PIN_RESET, LOW);
+	digitalWrite(WSNV_PIN_RESET, LOW);
 	delay(5);
-	digitalWrite(JDNV_PIN_RESET, HIGH);
+	digitalWrite(WSNV_PIN_RESET, HIGH);
 }
 
 TwoWire &Nuvoton::getWire() {
