@@ -4,8 +4,8 @@
 #include <Input/Input.h>
 #include <Wire.h>
 
-#define GET_NUM_EVENTS 0x40
-#define BYTE_GETEVENTS 0x41
+#define GET_NUM_EVENTS_BYTE 0x40
+#define GETEVENTS_BYTE 0x41
 #define NUM_BUTTONS 6
 
 class WheelsonInput : public Input {

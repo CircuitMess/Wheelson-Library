@@ -10,12 +10,12 @@ void Nuvoton::begin() {
 }
 
 bool Nuvoton::identify() {
-	Wire.beginTransmission(WSNV_ADDR);
-	Wire.write(BYTE_IDENTIFY);
+	Wire.beginTransmission(BYTE_WSNV_ADDR_BYTE);
+	Wire.write(IDENTIFY_BYTE);
 	Wire.endTransmission();
-	Wire.requestFrom(WSNV_ADDR, 1);
+	Wire.requestFrom(BYTE_WSNV_ADDR_BYTE, 1);
 	if(Wire.available()){
-		if(Wire.read() == WSNV_ADDR){
+		if(Wire.read() == BYTE_WSNV_ADDR_BYTE){
 			return true;
 		}
 		else{
