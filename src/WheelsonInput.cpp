@@ -7,10 +7,10 @@ WheelsonInput::WheelsonInput() : Input(NUM_BUTTONS), Wire(Nuvo.getWire()){
 }
 
 uint8_t WheelsonInput::getNumEvents(){
-	Wire.beginTransmission(WSNV_ADDR);
-	Wire.write(GET_NUM_EVENTS);
+	Wire.beginTransmission(BYTE_WSNV_ADDR_BYTE);
+	Wire.write(GET_NUM_EVENTS_BYTE);
 	Wire.endTransmission();
-	Wire.requestFrom(WSNV_ADDR, 2);
+	Wire.requestFrom(BYTE_WSNV_ADDR_BYTE, 2);
 	if(Wire.available()){
 		Wire.read();
 	}
@@ -30,11 +30,11 @@ void WheelsonInput::scanButtons(){
 
 void WheelsonInput::handleEvents(uint8_t numEvents){
 	if(numEvents == 0) return;
-	Wire.beginTransmission(WSNV_ADDR);
-	Wire.write(BYTE_GETEVENTS);
+	Wire.beginTransmission(BYTE_WSNV_ADDR_BYTE);
+	Wire.write(GETEVENTS_BYTE);
 	Wire.write(numEvents);
 	Wire.endTransmission();
-	Wire.requestFrom(WSNV_ADDR, numEvents + 1);
+	Wire.requestFrom(BYTE_WSNV_ADDR_BYTE, numEvents + 1);
 	if(Wire.available()){
 		Wire.read();
 	}

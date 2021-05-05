@@ -3,8 +3,8 @@
 
 #include <Wire.h>
 
-#define BYTE_IDENTIFY 0x00
-#define WSNV_ADDR 0x38
+#define IDENTIFY_BYTE 0x00
+#define BYTE_WSNV_ADDR_BYTE 0x38
 #define WSNV_PIN_RESET 33
 
 class Nuvoton {
