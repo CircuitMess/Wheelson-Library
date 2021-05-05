@@ -22,10 +22,9 @@ uint8_t WheelsonInput::getNumEvents(){
 }
 
 void WheelsonInput::scanButtons(){
-	if(getNumEvents() == 0) return;
-	else{
-		handleEvents(getNumEvents());
-	}
+	uint8_t numberOfEvents = getNumEvents();
+	if(numberOfEvents == 0) return;
+	handleEvents(numberOfEvents);
 }
 
 void WheelsonInput::handleEvents(uint8_t numEvents){
@@ -55,11 +54,11 @@ void WheelsonInput::handleEvents(uint8_t numEvents){
 }
 
 void WheelsonInput::handleSingleEvent(const WheelsonInput::InputEvent& event){
-if (event.state){
-	btnPress(event.id);
-}else{
-	btnRelease(event.id);
-}
+	if(event.state){
+		btnPress(event.id);
+	}else{
+		btnRelease(event.id);
+	}
 }
 
 
