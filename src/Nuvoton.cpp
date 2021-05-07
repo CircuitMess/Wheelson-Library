@@ -5,31 +5,31 @@ Nuvoton::Nuvoton(TwoWire& Wire) : Wire(Wire) {
 
 }
 
-void Nuvoton::begin() {
+bool Nuvoton::begin() {
+	pinMode(WSNV_PIN_RESET, OUTPUT);
+	reset();
+	delay(50);
+
 	Wire.begin(I2C_SDA, I2C_SCL);
+
+	Wire.beginTransmission(WSNV_ADDR);
+	if(Wire.endTransmission() != 0) return false;
+
+	return identify();
 }
 
 bool Nuvoton::identify() {
-	Wire.beginTransmission(BYTE_WSNV_ADDR_BYTE);
+	Wire.beginTransmission(WSNV_ADDR);
 	Wire.write(IDENTIFY_BYTE);
 	Wire.endTransmission();
-	Wire.requestFrom(BYTE_WSNV_ADDR_BYTE, 1);
-	if(Wire.available()){
-		if(Wire.read() == BYTE_WSNV_ADDR_BYTE){
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
-	else{
-		return false;
-	}
+
+	Wire.requestFrom(WSNV_ADDR, 1);
+	return Wire.available() && Wire.read() == WSNV_ADDR;
 }
 
 void Nuvoton::reset() {
 	digitalWrite(WSNV_PIN_RESET, LOW);
-	delay(5);
+	delay(50);
 	digitalWrite(WSNV_PIN_RESET, HIGH);
 }
 
