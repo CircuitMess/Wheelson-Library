@@ -8,6 +8,13 @@
 #define I2C_SDA 14
 #define I2C_SCL 15
 
+#define BTN_UP 3
+#define BTN_DOWN 1
+#define BTN_LEFT 0
+#define BTN_RIGHT 2
+#define BTN_MID 4
+#define BTN_BACK 5
+
 extern Nuvoton Nuvo;
 extern WheelsonLED LED;
 extern WheelsonMotor Motors;
