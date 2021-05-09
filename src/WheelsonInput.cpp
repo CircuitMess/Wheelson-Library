@@ -10,15 +10,10 @@ uint8_t WheelsonInput::getNumEvents(){
 	Wire.beginTransmission(WSNV_ADDR);
 	Wire.write(GET_NUM_EVENTS_BYTE);
 	Wire.endTransmission();
-	Wire.requestFrom(WSNV_ADDR, 2);
-	if(Wire.available()){
-		Wire.read();
-	}
-	if(Wire.available()){
-		uint8_t numEventsData = Wire.read();
-		return numEventsData;
-	}
 
+	Wire.requestFrom(WSNV_ADDR, 1);
+	if(!Wire.available()) return 0;
+	return Wire.read();
 }
 
 void WheelsonInput::scanButtons(){
@@ -29,25 +24,24 @@ void WheelsonInput::scanButtons(){
 
 void WheelsonInput::handleEvents(uint8_t numEvents){
 	if(numEvents == 0) return;
+
 	Wire.beginTransmission(WSNV_ADDR);
 	Wire.write(GETEVENTS_BYTE);
 	Wire.write(numEvents);
 	Wire.endTransmission();
-	Wire.requestFrom(WSNV_ADDR, numEvents + 1);
-	if(Wire.available()){
-		Wire.read();
-	}
-	std::vector<InputEvent> events;
-	uint8_t idState;
-	for(int i = numEvents; i > 0; i--){
-		if(Wire.available()){
-			idState = Wire.read();
-		}
-		uint8_t id = idState & 0x7F;
-		bool state = idState >> 7;
 
-		events.push_back({id,state});
+	std::vector<InputEvent> events;
+	Wire.requestFrom((uint8_t) WSNV_ADDR, numEvents);
+	while(!Wire.available()){
+		delayMicroseconds(1);
 	}
+	for(int i = 0; i < numEvents; i++){
+		uint8_t data = Wire.read();
+		uint8_t id = data & 0x7F;
+		bool state = data >> 7;
+		events.push_back({ id, state });
+	}
+
 	for(const InputEvent& event : events){
 		handleSingleEvent(event);
 	}
