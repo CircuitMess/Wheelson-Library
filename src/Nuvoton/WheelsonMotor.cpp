@@ -1,5 +1,5 @@
 #include "WheelsonMotor.h"
-#include "Wheelson.h"
+#include "../Wheelson.h"
 WheelsonMotor::WheelsonMotor() : Wire(Nuvo.getWire()) {
 }
 

@@ -1,9 +1,9 @@
 #ifndef WHEELSON_LIBRARY_WHEELSON_H
 #define WHEELSON_LIBRARY_WHEELSON_H
 
-#include "Nuvoton.h"
-#include "WheelsonLED.h"
-#include "WheelsonMotor.h"
+#include "Nuvoton/Nuvoton.h"
+#include "Nuvoton/WheelsonLED.h"
+#include "Nuvoton/WheelsonMotor.h"
 
 #define I2C_SDA 14
 #define I2C_SCL 15
