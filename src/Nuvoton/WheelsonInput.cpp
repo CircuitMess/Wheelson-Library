@@ -1,6 +1,6 @@
 #include "WheelsonInput.h"
 #include "Nuvoton.h"
-#include "Wheelson.h"
+#include "../Wheelson.h"
 
 WheelsonInput::WheelsonInput() : Input(NUM_BUTTONS), Wire(Nuvo.getWire()){
 

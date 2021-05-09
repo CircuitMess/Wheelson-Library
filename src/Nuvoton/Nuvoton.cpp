@@ -1,5 +1,5 @@
 #include "Nuvoton.h"
-#include "Wheelson.h"
+#include "../Wheelson.h"
 
 Nuvoton::Nuvoton(TwoWire& Wire) : Wire(Wire) {
 
