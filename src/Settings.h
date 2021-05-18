@@ -4,8 +4,8 @@
 #include <Arduino.h>
 
 struct SettingsData {
-	uint8_t shutdownTime = 1;
-	uint speed = 255;
+	uint8_t shutdownTime = 1; //index of value in vector
+	uint speed = 255; // max speed
 	bool inputTested = false;
 };
 
