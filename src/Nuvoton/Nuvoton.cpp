@@ -52,3 +52,14 @@ uint16_t Nuvoton::getBatteryVoltage(){
 TwoWire &Nuvoton::getWire() {
 	return this->Wire;
 }
+
+void Nuvoton::shutdown(){
+	for(uint8_t i = 0; i < 4; i++){
+		Motors.setMotor(i, 0);
+	}
+	LED.setBacklight(false);
+	LED.setHeadlight(0);
+	Wire.beginTransmission(WSNV_ADDR);
+	Wire.write(SHUTDOWN_BYTE);
+	Wire.endTransmission();
+}

@@ -14,6 +14,7 @@ public:
 	bool begin();
 	bool identify();
 	void reset();
+	void shutdown();
 	uint16_t getBatteryVoltage();
 	TwoWire& getWire();
 
