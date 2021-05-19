@@ -33,6 +33,22 @@ void Nuvoton::reset() {
 	digitalWrite(WSNV_PIN_RESET, HIGH);
 }
 
+uint16_t Nuvoton::getBatteryVoltage(){
+	uint16_t level;
+
+	Wire.beginTransmission(WSNV_ADDR);
+	Wire.write(BATTERY_BYTE);
+	Wire.endTransmission();
+
+	Wire.requestFrom(WSNV_ADDR, 2);
+	while(!Wire.available()){
+		delayMicroseconds(1);
+	}
+	Wire.readBytes(reinterpret_cast<char*>(&level), 2);
+
+	return level;
+}
+
 TwoWire &Nuvoton::getWire() {
 	return this->Wire;
 }
