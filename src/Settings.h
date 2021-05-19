@@ -3,6 +3,8 @@
 
 #include <Arduino.h>
 
+uint8_t ShutdownMinutes[] = {0, 1, 5, 15, 30};
+
 struct SettingsData {
 	uint8_t shutdownTime = 1; //index of value in vector, values : {0, 1, 5, 15, 30}[min]
 	uint speedMultiplier = 255; // speed * (speedMultiplier / 255)
