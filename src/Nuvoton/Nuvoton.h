@@ -4,6 +4,7 @@
 #include <Wire.h>
 
 #define IDENTIFY_BYTE 0x00
+#define BATTERY_BYTE 0x50
 #define WSNV_ADDR 0x38
 #define WSNV_PIN_RESET 33
 
@@ -13,6 +14,7 @@ public:
 	bool begin();
 	bool identify();
 	void reset();
+	uint16_t getBatteryVoltage();
 	TwoWire& getWire();
 
 private:
