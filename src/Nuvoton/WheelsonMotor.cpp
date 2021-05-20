@@ -1,6 +1,6 @@
 #include "WheelsonMotor.h"
 #include "../Wheelson.h"
-#include "src/Settings.h"
+#include "../Settings.h"
 
 WheelsonMotor::WheelsonMotor() : Wire(Nuvo.getWire()){
 }
@@ -13,7 +13,7 @@ void WheelsonMotor::setMotor(uint8_t id, int8_t intensity){
 	Wire.beginTransmission(WSNV_ADDR);
 	Wire.write(MOTOR_SET_BYTE);
 	Wire.write(id);
-	Wire.write((uint8_t) intensity * (Settings.get().speed / 255));
+	Wire.write((uint8_t) intensity * (Settings.get().speedMultiplier / 255));
 	Wire.endTransmission();
 }
 
@@ -28,6 +28,6 @@ int8_t WheelsonMotor::getMotor(uint8_t id){
 	if(Wire.available()){
 		state[id] = Wire.read() & 0xFF;
 	}
-	return (state[id] * (255 / Setting.get().speed));
+	return (state[id] * (255 / Settings.get().speedMultiplier));
 }
 
