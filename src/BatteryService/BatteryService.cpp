@@ -1,3 +1,4 @@
+#include <WiFi.h>
 #include "BatteryService.h"
 #include "../Wheelson.h"
 
@@ -7,8 +8,8 @@ BatteryService::BatteryService() : Wire(Nuvo.getWire()){
 }
 
 void BatteryService::loop(uint micros){
-	measureMicros+=micros;
-	if(measureMicros >= measureInterval*1000000){
+	measureMicros += micros;
+	if(measureMicros >= measureInterval * 1000000){
 		measureMicros = 0;
 		voltage = Nuvo.getBatteryVoltage();
 		uint8_t percentage = getPercentage();
@@ -22,6 +23,8 @@ void BatteryService::loop(uint micros){
 
 void BatteryService::shutdown(){
 	Nuvo.shutdown();
+	WiFi.mode(WIFI_OFF);
+	btStop();
 	ESP.deepSleep(0);
 }
 
@@ -30,7 +33,7 @@ void BatteryService::warning(){
 }
 
 uint8_t BatteryService::getLevel(){
-	uint8_t percentage = map(voltage, 3600, 4200, 0, 100);
+	uint8_t percentage = getPercentage();
 	if(percentage > 80){
 		return 4;
 	}else if(percentage <= 80 && percentage > 40){
@@ -49,5 +52,12 @@ uint16_t BatteryService::getVoltage() const{
 }
 
 uint8_t BatteryService::getPercentage(){
-	return map(voltage, 3600, 4200, 0, 100);
+	int16_t percentage = map(voltage, 3600, 4200, 0, 100);
+	if(percentage < 0){
+		return 0;
+	}else if(percentage > 100){
+		return 100;
+	}else{
+		return percentage;
+	}
 }
