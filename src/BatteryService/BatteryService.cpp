@@ -1,6 +1,7 @@
 #include <WiFi.h>
 #include "BatteryService.h"
 #include "../Wheelson.h"
+#include "../Nuvoton/WheelsonLED.h"
 
 const uint16_t BatteryService::measureInterval = 30; //in seconds
 
@@ -12,6 +13,18 @@ void BatteryService::loop(uint micros){
 	if(measureMicros >= measureInterval * 1000000){
 		measureMicros = 0;
 		voltage = Nuvo.getBatteryVoltage();
+		uint8_t batLvl=getLevel();
+		if(batLvl==4){
+			WheelsonLED().setRGB(GREEN);
+		}else if(batLvl==3 || batLvl==2){
+			WheelsonLED().setRGB(YELLOW);
+		}
+	/*	else if(batLvl==2){
+			WheelsonLED().setRGB(YELLOW);
+		}*/
+		else if(batLvl==1){
+			WheelsonLED().setRGB(RED);
+		}
 		uint8_t percentage = getPercentage();
 		if(percentage <= 1){
 			shutdown();
