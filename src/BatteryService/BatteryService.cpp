@@ -1,8 +1,10 @@
-#include <WiFi.h>
 #include "BatteryService.h"
 #include "../Wheelson.h"
+#include "ShutdownPopup.h"
+#include "WarningPopup.h"
+#include <Support/ContextTransition.h>
 
-const uint16_t BatteryService::measureInterval = 30; //in seconds
+const uint16_t BatteryService::measureInterval = 15; //in seconds
 
 BatteryService::BatteryService() : Wire(Nuvo.getWire()){
 }
@@ -14,22 +16,19 @@ void BatteryService::loop(uint micros){
 		voltage = Nuvo.getBatteryVoltage();
 		uint8_t percentage = getPercentage();
 		if(percentage <= 1){
-			shutdown();
-		}else if(percentage <= 15){
-			warning();
+			if(ContextTransition::isRunning() || Context::getCurrentContext() == shutdownPopup || Context::getCurrentContext() == warningPopup)
+				return;
+			shutdownPopup = new ShutdownPopup(*Context::getCurrentContext());
+			shutdownPopup->push(Context::getCurrentContext());
+		}else if((percentage <= 15 || true) && !warningShown){
+			if(ContextTransition::isRunning() || Context::getCurrentContext() == shutdownPopup || Context::getCurrentContext() == warningPopup)
+				return;
+			warningShown = true;
+			warningPopup = new WarningPopup(*Context::getCurrentContext());
+			warningPopup->push(Context::getCurrentContext());
 		}
+		measureMicros = 0;
 	}
-}
-
-void BatteryService::shutdown(){
-	Nuvo.shutdown();
-	WiFi.mode(WIFI_OFF);
-	btStop();
-	ESP.deepSleep(0);
-}
-
-void BatteryService::warning(){
-
 }
 
 uint8_t BatteryService::getLevel(){

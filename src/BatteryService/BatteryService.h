@@ -5,10 +5,13 @@
 #include <Loop/LoopListener.h>
 #include <Wire.h>
 
+class WarningPopup;
+class ShutdownPopup;
+
 #define GET_BATTERY_BYTE 0X50
 #define SHUTDOWN_BYTE 0X51
 
-class BatteryService : LoopListener {
+class BatteryService : public LoopListener {
 public:
 	BatteryService();
 	void loop(uint micros) override;
@@ -17,14 +20,14 @@ public:
 	uint8_t getPercentage();
 
 private:
-	TwoWire& Wire;
+	TwoWire &Wire;
 	uint16_t voltage = 0; //in mV
 	static const uint16_t measureInterval;
 	uint measureMicros = 0;
 
-	void shutdown();
-	void warning();
-
+	ShutdownPopup *shutdownPopup = nullptr;
+	WarningPopup *warningPopup = nullptr;
+	bool warningShown = false;
 };
 
 
