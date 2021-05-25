@@ -38,3 +38,24 @@ uint8_t WheelsonLED::getHeadlight() {
 	if(!Wire.available()) return 0;
 	return Wire.read() & 0xFF;
 }
+
+void WheelsonLED::setRGB(WLEDColor colour){
+
+	Wire.beginTransmission(WSNV_ADDR);
+	Wire.write(RGB_SET_BYTE);
+	Wire.write(colour);
+	Wire.endTransmission();
+}
+
+WLEDColor WheelsonLED::getRGB(){
+
+	Wire.beginTransmission(WSNV_ADDR);
+	Wire.write(RGB_GET_BYTE);
+	Wire.endTransmission();
+
+	Wire.requestFrom(WSNV_ADDR, 1);
+	if(!Wire.available()) return OFF;
+
+	uint8_t bitColour = Wire.read() & 0xFF;
+	return (WLEDColor)bitColour;
+}
