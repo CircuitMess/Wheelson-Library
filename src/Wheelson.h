@@ -16,6 +16,11 @@
 #define BTN_MID 4
 #define BTN_BACK 5
 
+#define MOTOR_BL 0
+#define MOTOR_FL 1
+#define MOTOR_BR 2
+#define MOTOR_FR 3
+
 extern Nuvoton Nuvo;
 extern WheelsonLED LED;
 extern WheelsonMotor Motors;
