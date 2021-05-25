@@ -39,7 +39,7 @@ uint8_t WheelsonLED::getHeadlight() {
 	return Wire.read() & 0xFF;
 }
 
-void WheelsonLED::setRGB(RGBColour colour){
+void WheelsonLED::setRGB(WLEDColor colour){
 
 	Wire.beginTransmission(WSNV_ADDR);
 	Wire.write(RGB_SET_BYTE);
@@ -47,7 +47,7 @@ void WheelsonLED::setRGB(RGBColour colour){
 	Wire.endTransmission();
 }
 
-RGBColour WheelsonLED::getRGB(){
+WLEDColor WheelsonLED::getRGB(){
 
 	Wire.beginTransmission(WSNV_ADDR);
 	Wire.write(RGB_GET_BYTE);
@@ -57,5 +57,5 @@ RGBColour WheelsonLED::getRGB(){
 	if(!Wire.available()) return OFF;
 
 	uint8_t bitColour = Wire.read() & 0xFF;
-	return (RGBColour)bitColour;
+	return (WLEDColor)bitColour;
 }
