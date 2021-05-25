@@ -74,30 +74,14 @@ void BatteryService::drawIcon(Sprite* canvas){
 		Serial.println("Battery icon, unpack error");
 		return;
 	}
+    char filename[20];
+	sprintf(filename,"battery_%d.raw",level);
 
-	if(level == 1){
-		fs::File bgFile = SPIFFS.open("/battery_1.raw");
-		bgFile.read(reinterpret_cast<uint8_t*>(batteryBuffer), 14 * 6 * 2);
-		bgFile.close();
-		canvas->drawIcon(batteryBuffer,140,5,14,6,1,TFT_TRANSPARENT);
-	}
-	else if(level == 2){
-		fs::File bgFile = SPIFFS.open("/battery_2.raw");
-		bgFile.read(reinterpret_cast<uint8_t*>(batteryBuffer), 14 * 6 * 2);
-		bgFile.close();
-		canvas->drawIcon(batteryBuffer,140,5,14,6,1,TFT_TRANSPARENT);
-	}
-	else if(level == 3){
-		fs::File bgFile = SPIFFS.open("/battery_3.raw");
-		bgFile.read(reinterpret_cast<uint8_t*>(batteryBuffer), 14 * 6 * 2);
-		bgFile.close();
-		canvas->drawIcon(batteryBuffer,140,5,14,6,1,TFT_TRANSPARENT);
-	}
-	else if(level == 4){
-		fs::File bgFile = SPIFFS.open("/battery_4.raw");
-		bgFile.read(reinterpret_cast<uint8_t*>(batteryBuffer), 14 * 6 * 2);
-		bgFile.close();
-		canvas->drawIcon(batteryBuffer,140,5,14,6,1,TFT_TRANSPARENT);
-	}
+	fs::File bgFile = SPIFFS.open(filename);
+	bgFile.read(reinterpret_cast<uint8_t*>(batteryBuffer), 14 * 6 * 2);
+	bgFile.close();
+	canvas->drawIcon(batteryBuffer, 140, 5, 14, 6, 1, TFT_TRANSPARENT);
+
 	lastDrawn=level;
+	free(batteryBuffer);
 }
