@@ -8,7 +8,9 @@ WheelsonMotor::WheelsonMotor() : Wire(Nuvo.getWire()){
 void WheelsonMotor::setMotor(uint8_t id, int8_t intensity){
 	if(id > 3) return;
 	if(state[id] == intensity) return;
-
+	if(intensity <= -128){
+		intensity = -127;
+	}
 	state[id] = intensity;
 	Wire.beginTransmission(WSNV_ADDR);
 	Wire.write(MOTOR_SET_BYTE);
