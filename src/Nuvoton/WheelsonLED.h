@@ -2,6 +2,8 @@
 #define WHEELSON_LIBRARY_WHEELSONLED_H
 
 #include <Wire.h>
+#include <Sync/Mutex.h>
+
 #define BACKLIGHT_SET_BYTE 0x20
 #define BACKLIGHT_GET_BYTE 0x21
 #define HEADLIGHT_SET_BYTE 0x22
@@ -25,6 +27,7 @@ public:
 
 private:
 	TwoWire& Wire;
+	Mutex& mutex;
 };
 
 

@@ -2,6 +2,7 @@
 #define WHEELSON_LIBRARY_NUVOTON_H
 
 #include <Wire.h>
+#include <Sync/Mutex.h>
 
 #define IDENTIFY_BYTE 0x00
 #define BATTERY_BYTE 0x50
@@ -17,9 +18,11 @@ public:
 	void shutdown();
 	uint16_t getBatteryVoltage();
 	TwoWire& getWire();
+	Mutex& getMutex();
 
 private:
 	TwoWire& Wire;
+	Mutex mutex;
 };
 
 #endif //WHEELSON_LIBRARY_NUVOTON_H
