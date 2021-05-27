@@ -2,6 +2,7 @@
 #define WHEELSON_LIBRARY_WHEELSONMOTOR_H
 
 #include <Wire.h>
+#include <Sync/Mutex.h>
 
 #define MOTOR_SET_BYTE 0X30
 #define MOTOR_GET_BYTE 0X31
@@ -14,6 +15,7 @@ public:
 
 private:
 	TwoWire& Wire;
+	Mutex& mutex;
 	int8_t state[4] = {0};
 
 };

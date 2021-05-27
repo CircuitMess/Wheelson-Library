@@ -2,18 +2,25 @@
 #include "Nuvoton.h"
 #include "../Wheelson.h"
 
-WheelsonInput::WheelsonInput() : Input(NUM_BUTTONS), Wire(Nuvo.getWire()){
+WheelsonInput::WheelsonInput() : Input(NUM_BUTTONS), Wire(Nuvo.getWire()), mutex(Nuvo.getMutex()){
 
 }
 
 uint8_t WheelsonInput::getNumEvents(){
+	mutex.lock();
 	Wire.beginTransmission(WSNV_ADDR);
 	Wire.write(GET_NUM_EVENTS_BYTE);
 	Wire.endTransmission();
 
 	Wire.requestFrom(WSNV_ADDR, 1);
-	if(!Wire.available()) return 0;
-	return Wire.read();
+	if(!Wire.available()){
+		mutex.unlock();
+		return 0;
+	}
+	uint8_t value = Wire.read();
+	mutex.unlock();
+
+	return value;
 }
 
 void WheelsonInput::scanButtons(){
@@ -25,6 +32,7 @@ void WheelsonInput::scanButtons(){
 void WheelsonInput::handleEvents(uint8_t numEvents){
 	if(numEvents == 0) return;
 
+	mutex.lock();
 	Wire.beginTransmission(WSNV_ADDR);
 	Wire.write(GETEVENTS_BYTE);
 	Wire.write(numEvents);
@@ -41,6 +49,7 @@ void WheelsonInput::handleEvents(uint8_t numEvents){
 		bool state = data >> 7;
 		events.push_back({ id, state });
 	}
+	mutex.unlock();
 
 	for(const InputEvent& event : events){
 		handleSingleEvent(event);
