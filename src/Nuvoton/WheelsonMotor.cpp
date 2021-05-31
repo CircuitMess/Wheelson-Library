@@ -38,3 +38,8 @@ int8_t WheelsonMotor::getMotor(uint8_t id){
 	return (state[id] * (255 / Settings.get().speedMultiplier));
 }
 
+void WheelsonMotor::stopAll(){
+	for(int i = 0; i < 4; i++){
+		setMotor(i, 0);
+	}
+}

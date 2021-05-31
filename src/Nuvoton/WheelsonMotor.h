@@ -12,6 +12,7 @@ public:
 	WheelsonMotor();
 	void setMotor(uint8_t id, int8_t intensity);
 	int8_t getMotor(uint8_t id);
+	void stopAll();
 
 private:
 	TwoWire& Wire;
