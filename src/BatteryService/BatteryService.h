@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <Loop/LoopListener.h>
 #include <Wire.h>
+#include <Display/Sprite.h>
 
 class WarningPopup;
 class ShutdownPopup;
@@ -19,11 +20,16 @@ public:
 	uint8_t getLevel();
 	uint8_t getPercentage();
 
+	uint8_t getLastDrawnLevel() const;
+
+	void drawIcon(Sprite* canvas);
+
 private:
 	TwoWire &Wire;
 	uint16_t voltage = 0; //in mV
 	static const uint16_t measureInterval;
 	uint measureMicros = 0;
+    uint8_t lastDrawn=0;
 
 	ShutdownPopup *shutdownPopup = nullptr;
 	WarningPopup *warningPopup = nullptr;
