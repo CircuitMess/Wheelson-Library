@@ -3,4 +3,4 @@
 Nuvoton Nuvo(Wire);
 WheelsonLED LED;
 WheelsonMotor Motors;
-BatteryMeasureService Battery;
+BatteryService Battery;

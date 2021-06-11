@@ -1,12 +1,12 @@
-#ifndef WHEELSON_LIBRARY_BATTERYMEASURESERVICE_H
-#define WHEELSON_LIBRARY_BATTERYMEASURESERVICE_H
+#ifndef WHEELSON_LIBRARY_BATTERYSERVICE_H
+#define WHEELSON_LIBRARY_BATTERYSERVICE_H
 
 #include <Arduino.h>
 #include <Loop/LoopListener.h>
 
-class BatteryMeasureService : public LoopListener {
+class BatteryService : public LoopListener {
 public:
-	BatteryMeasureService();
+	BatteryService();
 	void loop(uint micros) override;
 	uint16_t getVoltage() const;
 	uint8_t getLevel();
@@ -21,4 +21,4 @@ private:
 };
 
 
-#endif //WHEELSON_LIBRARY_BATTERYMEASURESERVICE_H
+#endif //WHEELSON_LIBRARY_BATTERYSERVICE_H

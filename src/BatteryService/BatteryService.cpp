@@ -1,27 +1,20 @@
-#include "BatteryMeasureService.h"
+#include "BatteryService.h"
 #include "../Wheelson.h"
 #include <Support/ContextTransition.h>
 #include "../Nuvoton/WheelsonLED.h"
 #include <WiFi.h>
 
-const uint16_t BatteryMeasureService::measureInterval = 10; //in seconds
+const uint16_t BatteryService::measureInterval = 10; //in seconds
 
-BatteryMeasureService::BatteryMeasureService(){
+BatteryService::BatteryService(){
 }
 
-void BatteryMeasureService::loop(uint micros){
+void BatteryService::loop(uint micros){
 	measureMicros += micros;
 	if(measureMicros >= measureInterval * 1000000){
 		measureMicros = 0;
 		voltage = Nuvo.getBatteryVoltage();
-		uint8_t batLvl = getLevel();
-		if(batLvl == 4){
-			LED.setRGB(GREEN);
-		}else if(batLvl == 3 || batLvl == 2){
-			LED.setRGB(YELLOW);
-		}else if(batLvl == 1){
-			LED.setRGB(RED);
-		}else if(batLvl == 0 && !shutdownDisable){
+		if(getLevel() == 0 && !shutdownDisable){
 			Nuvo.shutdown();
 			WiFi.mode(WIFI_OFF);
 			btStop();
@@ -31,7 +24,7 @@ void BatteryMeasureService::loop(uint micros){
 	}
 }
 
-uint8_t BatteryMeasureService::getLevel(){
+uint8_t BatteryService::getLevel(){
 	uint8_t percentage = getPercentage();
 	if(percentage > 80){
 		return 4;
@@ -46,11 +39,11 @@ uint8_t BatteryMeasureService::getLevel(){
 	}
 }
 
-uint16_t BatteryMeasureService::getVoltage() const{
+uint16_t BatteryService::getVoltage() const{
 	return voltage;
 }
 
-uint8_t BatteryMeasureService::getPercentage(){
+uint8_t BatteryService::getPercentage(){
 	int16_t percentage = map(voltage, 3600, 4200, 0, 100);
 	if(percentage < 0){
 		return 0;
@@ -61,6 +54,6 @@ uint8_t BatteryMeasureService::getPercentage(){
 	}
 }
 
-void BatteryMeasureService::disableShutdown(bool _shutdown){
+void BatteryService::disableShutdown(bool _shutdown){
 	shutdownDisable = _shutdown;
 }

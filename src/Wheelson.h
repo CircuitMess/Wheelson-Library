@@ -4,7 +4,7 @@
 #include "Nuvoton/Nuvoton.h"
 #include "Nuvoton/WheelsonLED.h"
 #include "Nuvoton/WheelsonMotor.h"
-#include "BatteryService/BatteryMeasureService.h"
+#include "BatteryService/BatteryService.h"
 
 #define I2C_SDA 14
 #define I2C_SCL 15
@@ -24,6 +24,6 @@
 extern Nuvoton Nuvo;
 extern WheelsonLED LED;
 extern WheelsonMotor Motors;
-extern BatteryMeasureService Battery;
+extern BatteryService Battery;
 
 #endif //WHEELSON_LIBRARY_WHEELSON_H
