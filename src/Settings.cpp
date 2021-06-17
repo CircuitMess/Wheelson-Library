@@ -4,7 +4,7 @@
 SettingsImpl Settings;
 
 bool SettingsImpl::begin(){
-
+	return Settings::init(&data, sizeof(SettingsData));
 }
 
 SettingsData& SettingsImpl::get(){
