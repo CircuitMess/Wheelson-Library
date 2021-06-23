@@ -1,13 +1,11 @@
 #include "BatteryService.h"
-#include "../Wheelson.h"
-#include "ShutdownPopup.h"
-#include "WarningPopup.h"
+#include "Wheelson.h"
 #include <Support/ContextTransition.h>
-#include "../Nuvoton/WheelsonLED.h"
+#include <WiFi.h>
 
-const uint16_t BatteryService::measureInterval = 30; //in seconds
+const uint16_t BatteryService::measureInterval = 10; //in seconds
 
-BatteryService::BatteryService() : Wire(Nuvo.getWire()){
+BatteryService::BatteryService(){
 }
 
 void BatteryService::loop(uint micros){
@@ -15,30 +13,11 @@ void BatteryService::loop(uint micros){
 	if(measureMicros >= measureInterval * 1000000){
 		measureMicros = 0;
 		voltage = Nuvo.getBatteryVoltage();
-		uint8_t batLvl=getLevel();
-		if(batLvl==4){
-			WheelsonLED().setRGB(GREEN);
-		}else if(batLvl==3 || batLvl==2){
-			WheelsonLED().setRGB(YELLOW);
-		}
-	/*	else if(batLvl==2){
-			WheelsonLED().setRGB(YELLOW);
-		}*/
-		else if(batLvl==1){
-			WheelsonLED().setRGB(RED);
-		}
-		uint8_t percentage = getPercentage();
-		if(percentage <= 1){
-			if(ContextTransition::isRunning() || Context::getCurrentContext() == shutdownPopup || Context::getCurrentContext() == warningPopup)
-				return;
-			shutdownPopup = new ShutdownPopup(*Context::getCurrentContext());
-			shutdownPopup->push(Context::getCurrentContext());
-		}else if((percentage <= 15 || true) && !warningShown){
-			if(ContextTransition::isRunning() || Context::getCurrentContext() == shutdownPopup || Context::getCurrentContext() == warningPopup)
-				return;
-			warningShown = true;
-			warningPopup = new WarningPopup(*Context::getCurrentContext());
-			warningPopup->push(Context::getCurrentContext());
+		if(getLevel() == 0 && !shutdownDisable){
+			Nuvo.shutdown();
+			WiFi.mode(WIFI_OFF);
+			btStop();
+			esp_deep_sleep_start();
 		}
 		measureMicros = 0;
 	}
@@ -72,6 +51,10 @@ uint8_t BatteryService::getPercentage(){
 	}else{
 		return percentage;
 	}
+}
+
+void BatteryService::disableShutdown(bool _shutdown){
+	shutdownDisable = _shutdown;
 }
 
 uint8_t BatteryService::getLastDrawnLevel() const{

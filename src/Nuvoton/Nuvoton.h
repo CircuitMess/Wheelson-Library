@@ -8,6 +8,7 @@
 #define BATTERY_BYTE 0x50
 #define WSNV_ADDR 0x38
 #define WSNV_PIN_RESET 33
+#define SHUTDOWN_BYTE 0x51
 
 class Nuvoton {
 public:
