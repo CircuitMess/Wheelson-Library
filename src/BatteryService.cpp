@@ -1,7 +1,6 @@
 #include "BatteryService.h"
-#include "../Wheelson.h"
+#include "Wheelson.h"
 #include <Support/ContextTransition.h>
-#include "../Nuvoton/WheelsonLED.h"
 #include <WiFi.h>
 
 const uint16_t BatteryService::measureInterval = 10; //in seconds

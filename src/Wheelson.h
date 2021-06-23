@@ -4,7 +4,7 @@
 #include "Nuvoton/Nuvoton.h"
 #include "Nuvoton/WheelsonLED.h"
 #include "Nuvoton/WheelsonMotor.h"
-#include "BatteryService/BatteryService.h"
+#include "BatteryService.h"
 
 #define I2C_SDA 14
 #define I2C_SCL 15

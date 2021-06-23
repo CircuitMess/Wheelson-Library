@@ -6,9 +6,6 @@
 #include <Wire.h>
 #include <Display/Sprite.h>
 
-#define GET_BATTERY_BYTE 0X50
-#define SHUTDOWN_BYTE 0X51
-
 class BatteryService : public LoopListener {
 public:
 	BatteryService();
