@@ -3,6 +3,7 @@
 
 #include <Display/Display.h>
 #include <vector>
+#include <opencv2.hpp>
 #include "MarkerDetection/Aruco/Marker.h"
 
 class Markers {
