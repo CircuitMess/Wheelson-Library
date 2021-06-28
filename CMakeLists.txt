@@ -43,6 +43,11 @@ include_directories(${Arduino15}/packages/cm/hardware/esp32/1.2.1/tools/sdk/incl
 include_directories(${Arduino15}/packages/cm/hardware/esp32/1.2.1/tools/sdk/include/driver)
 include_directories(${Arduino15}/packages/cm/hardware/esp32/1.2.1/tools/sdk/include/driver/driver)
 include_directories(${Arduino15}/packages/cm/hardware/esp32/1.2.1/tools/sdk/include/spi_flash)
+include_directories(${Arduino15}/packages/cm/hardware/esp32/1.2.1/tools/sdk/include/esp32-camera/)
+
+include_directories(${ArduinoLibs}/OpenCV-ESP32/src)
+
+
 
 file(GLOB_RECURSE SOURCES "src/**.cpp" "src/**.c" "src/**.hpp" "src/**.h")
 
