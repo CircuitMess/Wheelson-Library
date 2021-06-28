@@ -2,6 +2,7 @@
 #include "Wheelson.h"
 #include <Support/ContextTransition.h>
 #include <WiFi.h>
+#include <SPIFFS.h>
 
 const uint16_t BatteryService::measureInterval = 10; //in seconds
 
