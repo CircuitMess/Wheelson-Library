@@ -151,10 +151,10 @@ std::vector<Marker> Markers::detect(uint8_t* data, uint16_t width, uint16_t heig
 		}
 	}
 
-	Mat draw2;
-	resize(draw, draw2, Point(), 2, 2, INTER_NEAREST);
-
 	if(output != nullptr){
+		Mat draw2;
+		resize(draw, draw2, Point(), 2, 2, INTER_NEAREST);
+
 		for(int x = 0; x < 160; x++){
 			for(int y = 0; y < 120; y++){
 				output[y * 160 + x] = draw2.at<uint16_t>(y, x);
