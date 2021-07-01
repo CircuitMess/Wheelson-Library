@@ -22,7 +22,7 @@ public:
 private:
 	uint16_t voltage = 0; //in mV
 	static const uint16_t measureInterval;
-	uint measureMicros = 0;
+	uint measureMicros = measureInterval*1000000;
 	uint8_t lastDrawn=0;
 	bool shutdownDisable = false;
 };
