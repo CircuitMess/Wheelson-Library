@@ -46,6 +46,7 @@ Camera::Camera() : frame565((uint16_t*) ps_malloc(160 * 120 * sizeof(uint16_t)))
 	sensor->set_vflip(sensor, 1);
 	sensor->set_quality(sensor, 10);
 	sensor->set_special_effect(sensor, 0);
+	sensor->set_saturation(sensor, 2);
 }
 
 Camera::~Camera(){
