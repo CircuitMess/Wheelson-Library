@@ -70,6 +70,7 @@ void Nuvoton::shutdown(){
 	}
 	LED.setBacklight(false);
 	LED.setHeadlight(0);
+	LED.setRGB(OFF);
 
 	mutex.lock();
 	Wire.beginTransmission(WSNV_ADDR);
