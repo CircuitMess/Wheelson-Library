@@ -7,7 +7,7 @@ using namespace cv;
 using namespace std;
 
 void adaptive(const Mat& input, Mat& output, int blockSize){
-	output = input;
+	input.copyTo(output);
 
 	Size size = input.size();
 	Mat mean;
