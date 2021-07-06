@@ -56,6 +56,7 @@ Camera::~Camera(){
 	if(frame){
 		esp_camera_fb_return(frame);
 	}
+	esp_camera_deinit();
 }
 
 bool Camera::loadFrame(){
