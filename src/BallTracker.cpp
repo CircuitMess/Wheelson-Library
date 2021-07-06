@@ -1,8 +1,8 @@
+#include "BallTracker.h"
 #include <opencv2/core/mat.hpp>
 #include <opencv2/imgproc/imgproc_c.h>
 #include <opencv2/imgproc.hpp>
 #include <queue>
-#include "BallTracker.h"
 
 using namespace cv;
 
