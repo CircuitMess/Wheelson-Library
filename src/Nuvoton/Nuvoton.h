@@ -3,6 +3,7 @@
 
 #include <Wire.h>
 #include <Sync/Mutex.h>
+#include "I2CQueue.h"
 
 #define IDENTIFY_BYTE 0x00
 #define BATTERY_BYTE 0x50
@@ -19,11 +20,11 @@ public:
 	void shutdown();
 	uint16_t getBatteryVoltage();
 	TwoWire& getWire();
-	Mutex& getMutex();
+	I2CQueue& getI2C();
 
 private:
 	TwoWire& Wire;
-	Mutex mutex;
+	I2CQueue i2c;
 };
 
 #endif //WHEELSON_LIBRARY_NUVOTON_H

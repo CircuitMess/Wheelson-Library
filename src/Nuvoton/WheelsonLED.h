@@ -3,6 +3,7 @@
 
 #include <Wire.h>
 #include <Sync/Mutex.h>
+#include "I2CQueue.h"
 
 #define BACKLIGHT_SET_BYTE 0x20
 #define BACKLIGHT_GET_BYTE 0x21
@@ -26,8 +27,8 @@ public:
 	WLEDColor getRGB();
 
 private:
-	TwoWire& Wire;
-	Mutex& mutex;
+	I2CQueue& i2c;
+
 };
 
 

@@ -1,7 +1,7 @@
 #include "Nuvoton.h"
 #include "../Wheelson.h"
 
-Nuvoton::Nuvoton(TwoWire& Wire) : Wire(Wire) {
+Nuvoton::Nuvoton(TwoWire& Wire) : Wire(Wire), i2c(WSNV_ADDR, this->Wire) {
 
 }
 
@@ -10,30 +10,24 @@ bool Nuvoton::begin() {
 	reset();
 	delay(50);
 
-	mutex.lock();
+	i2c.setHome();
+
 	Wire.begin(I2C_SDA, I2C_SCL);
 
 	Wire.beginTransmission(WSNV_ADDR);
 	if(Wire.endTransmission() != 0){
-		mutex.unlock();
 		return false;
 	}
-	mutex.unlock();
-
 	return identify();
 }
 
 bool Nuvoton::identify() {
-	mutex.lock();
-	Wire.beginTransmission(WSNV_ADDR);
-	Wire.write(IDENTIFY_BYTE);
-	Wire.endTransmission();
+	uint8_t msg[] = { IDENTIFY_BYTE };
+	uint8_t value;
 
-	Wire.requestFrom(WSNV_ADDR, 1);
-	bool value = Wire.available() && Wire.read() == WSNV_ADDR;
-	mutex.unlock();
+	i2c.request(msg, 1, &value, 1);
 
-	return value;
+	return value == WSNV_ADDR;
 }
 
 void Nuvoton::reset() {
@@ -45,17 +39,8 @@ void Nuvoton::reset() {
 uint16_t Nuvoton::getBatteryVoltage(){
 	uint16_t level;
 
-	mutex.lock();
-	Wire.beginTransmission(WSNV_ADDR);
-	Wire.write(BATTERY_BYTE);
-	Wire.endTransmission();
-
-	Wire.requestFrom(WSNV_ADDR, 2);
-	while(!Wire.available()){
-		delayMicroseconds(1);
-	}
-	Wire.readBytes(reinterpret_cast<char*>(&level), 2);
-	mutex.unlock();
+	uint8_t msg[] = { BATTERY_BYTE };
+	i2c.request(msg, 1, &level, 2);
 
 	return level;
 }
@@ -72,13 +57,10 @@ void Nuvoton::shutdown(){
 	LED.setHeadlight(0);
 	LED.setRGB(OFF);
 
-	mutex.lock();
-	Wire.beginTransmission(WSNV_ADDR);
-	Wire.write(SHUTDOWN_BYTE);
-	Wire.endTransmission();
-	mutex.unlock();
+	uint8_t msg[] = { SHUTDOWN_BYTE };
+	i2c.send(msg, 1);
 }
 
-Mutex& Nuvoton::getMutex(){
-	return mutex;
+I2CQueue& Nuvoton::getI2C(){
+	return i2c;
 }

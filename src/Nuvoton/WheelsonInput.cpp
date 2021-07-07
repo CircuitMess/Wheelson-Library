@@ -2,25 +2,16 @@
 #include "Nuvoton.h"
 #include "../Wheelson.h"
 
-WheelsonInput::WheelsonInput() : Input(NUM_BUTTONS), Wire(Nuvo.getWire()), mutex(Nuvo.getMutex()){
+WheelsonInput::WheelsonInput() : Input(NUM_BUTTONS), i2c(Nuvo.getI2C()){
 
 }
 
 uint8_t WheelsonInput::getNumEvents(){
-	mutex.lock();
-	Wire.beginTransmission(WSNV_ADDR);
-	Wire.write(GET_NUM_EVENTS_BYTE);
-	Wire.endTransmission();
+	uint8_t msg[] = { GET_NUM_EVENTS_BYTE };
+	uint8_t numEvents;
+	i2c.request(msg, 1, &numEvents, 1);
 
-	Wire.requestFrom(WSNV_ADDR, 1);
-	if(!Wire.available()){
-		mutex.unlock();
-		return 0;
-	}
-	uint8_t value = Wire.read();
-	mutex.unlock();
-
-	return value;
+	return numEvents;
 }
 
 void WheelsonInput::scanButtons(){
@@ -32,28 +23,20 @@ void WheelsonInput::scanButtons(){
 void WheelsonInput::handleEvents(uint8_t numEvents){
 	if(numEvents == 0) return;
 
-	mutex.lock();
-	Wire.beginTransmission(WSNV_ADDR);
-	Wire.write(GETEVENTS_BYTE);
-	Wire.write(numEvents);
-	Wire.endTransmission();
+	uint8_t msg[] = { GETEVENTS_BYTE, numEvents };
+	uint8_t* data = static_cast<uint8_t*>(malloc(numEvents));
+	i2c.request(msg, 2, data, numEvents);
 
-	std::vector<InputEvent> events;
-	Wire.requestFrom((uint8_t) WSNV_ADDR, numEvents);
-	while(!Wire.available()){
-		delayMicroseconds(1);
-	}
 	for(int i = 0; i < numEvents; i++){
-		uint8_t data = Wire.read();
-		uint8_t id = data & 0x7F;
-		bool state = data >> 7;
-		events.push_back({ id, state });
-	}
-	mutex.unlock();
+		uint8_t event = data[i];
 
-	for(const InputEvent& event : events){
-		handleSingleEvent(event);
+		uint8_t id = event & 0x7F;
+		bool state = event >> 7;
+
+		handleSingleEvent({ id, state });
 	}
+
+	free(data);
 }
 
 void WheelsonInput::handleSingleEvent(const WheelsonInput::InputEvent& event){

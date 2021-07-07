@@ -3,6 +3,7 @@
 
 #include <Wire.h>
 #include <Sync/Mutex.h>
+#include "I2CQueue.h"
 
 #define MOTOR_SET_BYTE 0X30
 #define MOTOR_GET_BYTE 0X31
@@ -15,8 +16,7 @@ public:
 	void stopAll();
 
 private:
-	TwoWire& Wire;
-	Mutex& mutex;
+	I2CQueue& i2c;
 	int8_t state[4] = {0};
 
 };

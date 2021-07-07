@@ -4,6 +4,7 @@
 #include <Input/Input.h>
 #include <Wire.h>
 #include <Sync/Mutex.h>
+#include "I2CQueue.h"
 
 #define GET_NUM_EVENTS_BYTE 0x40
 #define GETEVENTS_BYTE 0x41
@@ -14,6 +15,7 @@ public:
 	WheelsonInput();
 
 private:
+	I2CQueue& i2c;
 
 	struct InputEvent {
 		uint8_t id;
@@ -26,8 +28,6 @@ private:
 
 	void handleSingleEvent(const InputEvent& event);
 
-	TwoWire& Wire;
-	Mutex& mutex;
 protected:
 	void scanButtons() override;
 };
