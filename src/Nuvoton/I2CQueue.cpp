@@ -32,7 +32,6 @@ void I2CQueue::handleSend(I2CQueue::SendData& data){
 }
 
 void I2CQueue::handleRequest(const I2CQueue::RequestData& data){
-	printf("Handling request\n");
 	Wire.beginTransmission(addr);
 	Wire.write((const uint8_t*) data.msg, data.msgSize);
 	Wire.endTransmission();
@@ -46,11 +45,8 @@ void I2CQueue::handleRequest(const I2CQueue::RequestData& data){
 	Wire.readBytes((uint8_t*) data.dst, data.dstSize);
 
 	if(data.done){
-		printf("data doe set\n");
 		*data.done = true;
 	}
-
-	printf("Handling request done\n");
 }
 
 void I2CQueue::send(const void* data, size_t n){
