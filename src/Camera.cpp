@@ -3,6 +3,7 @@
 #include <esp_camera.h>
 #include <Display/Color.h>
 #include "Wheelson.h"
+bool Camera::inited = false;
 
 Camera::Camera() : frame565((uint16_t*) ps_malloc(160 * 120 * sizeof(uint16_t))), frame888(static_cast<uint8_t*>(ps_malloc(160 * 120 * 3))){
 
@@ -30,14 +31,15 @@ Camera::Camera() : frame565((uint16_t*) ps_malloc(160 * 120 * sizeof(uint16_t)))
 	config.pixel_format = PIXFORMAT_RGB888;
 	config.frame_size = FRAMESIZE_QQVGA;
 	config.fb_count = 1;
+	if(!inited){
+		// Init Camera
+		esp_err_t err = esp_camera_init(&config);
+		inited = err == ESP_OK;
 
-	// Init Camera
-	esp_err_t err = esp_camera_init(&config);
-	inited = err != ESP_OK;
-
-	if(err != ESP_OK){
-		Serial.printf("Camera init failed with error 0x%x", err);
-		return;
+		if(err != ESP_OK){
+			Serial.printf("Camera init failed with error 0x%x", err);
+			return;
+		}
 	}
 
 	Serial.println("Camera init OK!");
@@ -56,7 +58,6 @@ Camera::~Camera(){
 	if(frame){
 		esp_camera_fb_return(frame);
 	}
-	esp_camera_deinit();
 }
 
 bool Camera::loadFrame(){

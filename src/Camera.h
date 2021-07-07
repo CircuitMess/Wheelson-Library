@@ -43,7 +43,7 @@ private:
 	uint16_t* frame565;
 	uint8_t* frame888;
 
-	bool inited = false;
+	static bool inited;
 };
 
 
