@@ -13,7 +13,7 @@ void WheelsonMotor::setMotor(uint8_t id, int8_t intensity){
 	}
 	state[id] = intensity;
 
-	uint8_t msg[] = { MOTOR_SET_BYTE, id, static_cast<uint8_t>(intensity * (Settings.get().speedMultiplier / 255)) };
+	uint8_t msg[] = { MOTOR_SET_BYTE, id, static_cast<uint8_t>(intensity * Settings.get().speedMultiplier / 255) };
 	i2c.send(msg, 3);
 }
 
@@ -23,7 +23,7 @@ int8_t WheelsonMotor::getMotor(uint8_t id){
 	uint8_t msg[] = { MOTOR_GET_BYTE, id };
 	i2c.request(msg, 2, &state[id], 1);
 
-	return (state[id] * (255 / Settings.get().speedMultiplier));
+	return (state[id] * 255 / Settings.get().speedMultiplier);
 }
 
 void WheelsonMotor::stopAll(){
