@@ -128,7 +128,7 @@ std::vector<Ball> BallTracker::detect(uint8_t* data, uint16_t width, uint16_t he
 		sprintf(buf, "%.2f", diff);
 		//putText(draw, buf, { (int) center.x, (int) center.y }, FONT_HERSHEY_DUPLEX, 0.5, CV_RGB(255, 0, 0));
 
-		if(diff >= 1.5){
+		if(diff >= 1){
 			contourSizes.pop();
 			continue;
 		}
