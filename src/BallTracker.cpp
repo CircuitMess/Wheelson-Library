@@ -20,17 +20,33 @@ std::vector<Ball> BallTracker::detect(uint8_t* data, uint16_t width, uint16_t he
 
 	Mat draw;
 
-	Scalar colorLower(95, 100, 50);
-	Scalar colorUpper(130, 255, 255);
+
+
 
 	Mat blur;
 	cv::boxFilter(frame, blur, frame.depth(), cv::Size(4, 4), cv::Point(-1,-1), true, cv::BORDER_CONSTANT );
 
 	Mat hsv;
 	cvtColor(blur, hsv, COLOR_BGR2HSV);
+	blur.release();
 
+
+//	RED
+//	Mat mask1, mask2;
+//	inRange(hsv, Scalar(0, 70, 50), Scalar(15, 255, 255), mask1);
+//	inRange(hsv, Scalar(165, 70, 50), Scalar(180, 255, 255), mask2);
+//
+//	Mat mask = mask1 | mask2;
+//	mask1.release();
+//	mask2.release();
+
+
+	//BLUE
+	Scalar colorLower(95, 100, 50);
+	Scalar colorUpper(130, 255, 255);
 	Mat mask;
 	inRange(hsv, colorLower, colorUpper, mask);
+
 
 	if(output){
 		cvtColor(mask, draw, CV_GRAY2BGR565);
@@ -112,7 +128,7 @@ std::vector<Ball> BallTracker::detect(uint8_t* data, uint16_t width, uint16_t he
 		sprintf(buf, "%.2f", diff);
 		//putText(draw, buf, { (int) center.x, (int) center.y }, FONT_HERSHEY_DUPLEX, 0.5, CV_RGB(255, 0, 0));
 
-		if(diff >= 1.0){
+		if(diff >= 1.5){
 			contourSizes.pop();
 			continue;
 		}
