@@ -1,6 +1,8 @@
 #ifndef WHEELSON_LIBRARY_WHEELSON_H
 #define WHEELSON_LIBRARY_WHEELSON_H
 
+#include <Display/Display.h>
+#include <Input/Input.h>
 #include "Nuvoton/Nuvoton.h"
 #include "Nuvoton/WheelsonLED.h"
 #include "Nuvoton/WheelsonMotor.h"
@@ -45,5 +47,21 @@ extern Nuvoton Nuvo;
 extern WheelsonLED LED;
 extern WheelsonMotor Motors;
 extern BatteryService Battery;
+
+class WheelsonImpl {
+public:
+	WheelsonImpl();
+	void begin();
+
+	Display& getDisplay();
+	Input* getInput();
+
+private:
+	Display display;
+	Input* input = nullptr;
+
+};
+
+extern WheelsonImpl Wheelson;
 
 #endif //WHEELSON_LIBRARY_WHEELSON_H
