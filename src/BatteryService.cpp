@@ -71,12 +71,12 @@ void BatteryService::drawIcon(Sprite* canvas){
 		return;
 	}
     char filename[20];
-	sprintf(filename,"battery_%d.raw",level);
+	sprintf(filename,"/battery_%d.raw",level);
 
 	fs::File bgFile = SPIFFS.open(filename);
 	bgFile.read(reinterpret_cast<uint8_t*>(batteryBuffer), 14 * 6 * 2);
 	bgFile.close();
-	canvas->drawIcon(batteryBuffer, 140, 5, 14, 6, 1, TFT_TRANSPARENT);
+	canvas->drawIcon(batteryBuffer, 143, 5, 14, 6, 1, TFT_TRANSPARENT);
 
 	lastDrawn=level;
 	free(batteryBuffer);
