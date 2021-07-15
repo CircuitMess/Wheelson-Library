@@ -44,7 +44,7 @@ uint16_t BatteryService::getVoltage() const{
 }
 
 uint8_t BatteryService::getPercentage(){
-	int16_t percentage = map(voltage, 3600, 4200, 0, 100);
+	int16_t percentage = map(voltage, 3650, 4200, 0, 100);
 	if(percentage < 0){
 		return 0;
 	}else if(percentage > 100){
