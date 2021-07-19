@@ -6,7 +6,7 @@
 
 using namespace cv;
 
-std::vector<Ball> BallTracker::detect(uint8_t* data, uint16_t width, uint16_t height, BallTracker::PixFormat format, Color* output){
+std::vector<Ball> BallTracker::detect(uint8_t* data, uint16_t width, uint16_t height, uint8_t hue, BallTracker::PixFormat format, Color* output){
 	Mat frame;
 
 	if(format == RGB565){
@@ -31,21 +31,26 @@ std::vector<Ball> BallTracker::detect(uint8_t* data, uint16_t width, uint16_t he
 	blur.release();
 
 
-//	RED
-//	Mat mask1, mask2;
-//	inRange(hsv, Scalar(0, 70, 50), Scalar(15, 255, 255), mask1);
-//	inRange(hsv, Scalar(165, 70, 50), Scalar(180, 255, 255), mask2);
-//
-//	Mat mask = mask1 | mask2;
-//	mask1.release();
-//	mask2.release();
-
-
-	//BLUE
-	Scalar colorLower(95, 100, 50);
-	Scalar colorUpper(130, 255, 255);
 	Mat mask;
-	inRange(hsv, colorLower, colorUpper, mask);
+	if(hue < 15){
+		Mat mask1, mask2;
+		inRange(hsv, Scalar(0, 70, 50), Scalar(hue + 15, 255, 255), mask1);
+		inRange(hsv, Scalar(180 - 15 + hue, 70, 50), Scalar(180, 255, 255), mask2);
+		mask = mask1 | mask2;
+		mask1.release();
+		mask2.release();
+	}else if(hue > 165){
+		Mat mask1, mask2;
+		inRange(hsv, Scalar(hue - 15, 70, 50), Scalar(180, 255, 255), mask1);
+		inRange(hsv, Scalar(0, 70, 50), Scalar(hue + 15 - 180, 255, 255), mask2);
+		mask = mask1 | mask2;
+		mask1.release();
+		mask2.release();
+	}else{
+		Scalar colorLower(hue-15, 100, 50);
+		Scalar colorUpper(hue+15, 255, 255);
+		inRange(hsv, colorLower, colorUpper, mask);
+	}
 
 
 	if(output){

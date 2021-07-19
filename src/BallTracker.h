@@ -30,7 +30,7 @@ public:
 		RGB888 // 3 bytes per pixel, RGB565 format
 	};
 
-	static std::vector<Ball> detect(uint8_t* frame, uint16_t width, uint16_t height, PixFormat format = RGB565, Color* output = nullptr);
+	static std::vector<Ball> detect(uint8_t* frame, uint16_t width, uint16_t height, uint8_t hue, PixFormat format = RGB565, Color* output = nullptr);
 };
 
 
