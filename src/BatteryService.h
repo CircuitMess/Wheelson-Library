@@ -13,6 +13,9 @@ public:
 	uint16_t getVoltage() const;
 	uint8_t getLevel();
 	uint8_t getPercentage();
+
+//	bool isCharging() const;
+
 	void disableShutdown(bool _shutdown);
 
 	uint8_t getLastDrawnLevel() const;
@@ -25,6 +28,7 @@ private:
 	uint measureMicros = measureInterval*1000000;
 	uint8_t lastDrawn=0;
 	bool shutdownDisable = false;
+//	bool charging = false;
 };
 
 

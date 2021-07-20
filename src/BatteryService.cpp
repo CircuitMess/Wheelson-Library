@@ -14,6 +14,11 @@ void BatteryService::loop(uint micros){
 	if(measureMicros >= measureInterval * 1000000){
 		measureMicros = 0;
 		voltage = Nuvo.getBatteryVoltage();
+		/*if(voltage > 4325){
+			charging = true;
+		}else{
+			charging = false;
+		}*/
 		if(getLevel() == 0 && !shutdownDisable){
 			Nuvo.shutdown();
 			WiFi.mode(WIFI_OFF);
@@ -78,6 +83,25 @@ void BatteryService::drawIcon(Sprite* canvas){
 	bgFile.close();
 	canvas->drawIcon(batteryBuffer, 143, 5, 14, 6, 1, TFT_TRANSPARENT);
 
+	/*if(charging){
+		Color* chargingBuffer = nullptr;
+		chargingBuffer = static_cast<Color*>(ps_malloc(14 * 6 * 2));
+		if(chargingBuffer == nullptr){
+			Serial.println("Charging icon, unpack error");
+			return;
+		}
+		char filename[20];
+
+		fs::File bgFile = SPIFFS.open("/chargingIcon.raw");
+		bgFile.read(reinterpret_cast<uint8_t*>(chargingBuffer), 6 * 6 * 2);
+		bgFile.close();
+		canvas->drawIcon(chargingBuffer, 147, 5, 6, 6, 1, TFT_TRANSPARENT);
+		free(chargingBuffer);
+	}*/
 	lastDrawn=level;
 	free(batteryBuffer);
 }
+
+/*bool BatteryService::isCharging() const{
+	return charging;
+}*/
