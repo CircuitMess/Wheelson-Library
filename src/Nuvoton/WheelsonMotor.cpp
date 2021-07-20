@@ -23,7 +23,7 @@ int8_t WheelsonMotor::getMotor(uint8_t id){
 	uint8_t msg[] = { MOTOR_GET_BYTE, id };
 	i2c.request(msg, 2, &state[id], 1);
 
-	return (state[id] * 255 / Settings.get().speedMultiplier);
+	return (state[id] * 255 / (int16_t) Settings.get().speedMultiplier);
 }
 
 void WheelsonMotor::stopAll(){
