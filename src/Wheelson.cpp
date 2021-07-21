@@ -46,6 +46,7 @@ void WheelsonImpl::begin(){
 	input->preregisterButtons({ 0, 1, 2, 3, 4, 5 });
 	LoopManager::addListener(input);
 
+	Battery.begin();
 	display.begin();
 }
 
