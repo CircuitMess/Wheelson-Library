@@ -8,6 +8,9 @@ const uint16_t BatteryService::measureInterval = 10; //in seconds
 
 BatteryService::BatteryService(){
 }
+BatteryService::~BatteryService(){
+	free(batteryBuffer);
+}
 
 void BatteryService::loop(uint micros){
 	measureMicros += micros;
@@ -69,19 +72,7 @@ uint8_t BatteryService::getLastDrawnLevel() const{
 
 void BatteryService::drawIcon(Sprite* canvas){
 	uint8_t level = getLevel();
-	Color* batteryBuffer = nullptr;
-	batteryBuffer = static_cast<Color*>(ps_malloc(14 * 6 * 2));
-	if(batteryBuffer == nullptr){
-		Serial.println("Battery icon, unpack error");
-		return;
-	}
-    char filename[20];
-	sprintf(filename,"/battery_%d.raw",level);
-
-	fs::File bgFile = SPIFFS.open(filename);
-	bgFile.read(reinterpret_cast<uint8_t*>(batteryBuffer), 14 * 6 * 2);
-	bgFile.close();
-	canvas->drawIcon(batteryBuffer, 143, 5, 14, 6, 1, TFT_TRANSPARENT);
+	canvas->drawIcon(batteryBuffer[level], 143, 5, 14, 6, 1, TFT_TRANSPARENT);
 
 	/*if(charging){
 		Color* chargingBuffer = nullptr;
@@ -99,8 +90,27 @@ void BatteryService::drawIcon(Sprite* canvas){
 		free(chargingBuffer);
 	}*/
 	lastDrawn=level;
-	free(batteryBuffer);
 }
+
+void BatteryService::begin(){
+	for(int i=0;i<5;i++){
+		uploadBuffer(i);
+	}
+}
+
+void BatteryService::uploadBuffer(int i){
+	batteryBuffer[i] = static_cast<Color*>(ps_malloc(14 * 6 * 2));
+	if(batteryBuffer[i] == nullptr){
+		Serial.println("Battery icon, unpack error");
+		return;
+	}
+	char filename[30];
+	sprintf(filename, "/battery_%d.raw", i);
+	fs::File bgFile = SPIFFS.open(filename);
+	bgFile.read(reinterpret_cast<uint8_t*>(batteryBuffer[i]), 14 * 6 * 2);
+	bgFile.close();
+}
+
 
 /*bool BatteryService::isCharging() const{
 	return charging;

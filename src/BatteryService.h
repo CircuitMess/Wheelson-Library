@@ -9,6 +9,9 @@
 class BatteryService : public LoopListener {
 public:
 	BatteryService();
+
+	virtual ~BatteryService();
+
 	void loop(uint micros) override;
 	uint16_t getVoltage() const;
 	uint8_t getLevel();
@@ -22,12 +25,17 @@ public:
 
 	void drawIcon(Sprite* canvas);
 
+	void begin();
+
 private:
 	uint16_t voltage = 0; //in mV
 	static const uint16_t measureInterval;
 	uint measureMicros = measureInterval*1000000;
 	uint8_t lastDrawn=0;
 	bool shutdownDisable = false;
+	Color* batteryBuffer[4] = {};
+	uint8_t level = 0;
+	void uploadBuffer(int i);
 //	bool charging = false;
 };
 
