@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 project(Wheelson-Library)
 set(PORT /dev/ttyS5)
-set(DEVICE cm:esp32:jayd)
+set(DEVICE cm:esp32:wheelson)
 set(CMAKE_CXX_STANDARD 11)
 
 if(WIN32 OR CYGWIN)
