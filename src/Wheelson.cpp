@@ -42,6 +42,13 @@ void WheelsonImpl::begin(){
 	LoopManager::addListener(input);
 
 	Battery.begin();
+
+	auto sprite = (TFT_eSprite*) display.getBaseSprite();
+	sprite->deleteSprite();
+	sprite->setPsram(true);
+	sprite->createSprite(160, 128);
+
+	display.getTft()->setPanel(WheelsonDisplay::panel1());
 	display.begin();
 }
 
