@@ -1,4 +1,5 @@
 #include "Wheelson.h"
+#include <Util/HWRevision.h>
 
 Nuvoton Nuvo(Wire);
 WheelsonLED LED;
@@ -48,7 +49,11 @@ void WheelsonImpl::begin(){
 	sprite->setPsram(true);
 	sprite->createSprite(160, 128);
 
-	display.getTft()->setPanel(WheelsonDisplay::panel1());
+	if(HWRevision::get() == 1){
+		display.getTft()->setPanel(WheelsonDisplay::panel2());
+	}else{
+		display.getTft()->setPanel(WheelsonDisplay::panel1());
+	}
 	display.begin();
 }
 
