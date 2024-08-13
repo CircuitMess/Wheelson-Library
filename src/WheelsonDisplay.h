@@ -11,7 +11,7 @@
 class WheelsonDisplay : public lgfx::LGFX_Device {
 public:
 
-	static lgfx::Panel_ST7735* panel1();
+	static lgfx::Panel_ST7735S* panel1();
 
 };
 

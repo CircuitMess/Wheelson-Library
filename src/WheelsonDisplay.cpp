@@ -1,6 +1,6 @@
 #include "WheelsonDisplay.h"
 
-lgfx::Panel_ST7735* WheelsonDisplay::panel1(){
+lgfx::Panel_ST7735S* WheelsonDisplay::panel1(){
 	auto bus = new lgfx::Bus_SPI();
 	auto panel = new lgfx::Panel_ST7735S();
 
