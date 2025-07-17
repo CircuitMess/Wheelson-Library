@@ -51,8 +51,6 @@
 #define HREF_GPIO_NUM     23
 #define PCLK_GPIO_NUM     22
 
-#define PIN_JIG 35
-
 extern Nuvoton Nuvo;
 extern WheelsonLED LED;
 extern WheelsonMotor Motors;
